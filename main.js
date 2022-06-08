@@ -20,7 +20,6 @@ function process() {
 
     overviewOutput.appendChild(charCount);
     overviewOutput.appendChild(wordCount);
-
     //word frequency testing
     getWordFrequency(string);
 }
