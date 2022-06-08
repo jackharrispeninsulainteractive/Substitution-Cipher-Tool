@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Q2 Cryptanalysis with Missing Encrypted Text</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<main>
+    <section>
+        <h1>Q2 Cryptanalysis with Missing Encrypted Text</h1>
+    </section>
+    <section>
+        <h2>Input & Settings</h2>
+        <form action="javascript:process()">
+            <p>Input text</p>
+            <br>
+            <textarea id="input" cols="30" rows="10"></textarea>
+            <br>
+            <button style="margin-top: 16px">analyze</button>
+        </form>
+    </section>
+
+    <section id="overview">
+        <h2>Overview</h2>
+        <div id="overview-output">
+            <p style="text-align: center; color: red; font-weight: bolder">Click analyze to see data</p>
+        </div>
+    </section>
+
+    <section id="frequency">
+        <div class="flex">
+            <div>
+                <h2>Letter Frequency</h2>
+                <br>
+                <p>Letter frequency showing the total occurrence count example "x1" and the total percentage of the input that that letter makes up example "10%"</p>
+                <br>
+                <div id="letters-output">
+                    <p style="text-align: center; color: red; font-weight: bolder">Click analyze to see data</p>
+                </div>
+            </div>
+            <div>
+                <h2>Word Frequency</h2>
+                <br>
+                <p>Word frequency shows us the amount of times a unique work appears inside our input text, we can see the count represented to the left of each unique word</p>
+                <br>
+                <div id="words-output">
+                    <p style="text-align: center; color: red; font-weight: bolder">Click analyze to see data</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <p style="text-align: center">Created by Jack Harris 8/06/2022 for RMIT Security in Computing and Information Technology Assessment 1</p>
+    </section>
+
+</main>
+
+
+
+<script src="main.js"></script>
+
+
+</body>
+</html>
