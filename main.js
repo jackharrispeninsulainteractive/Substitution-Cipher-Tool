@@ -5,43 +5,57 @@ let lettersOutput = document.getElementById("letters-output");
 let substitutionOutput = document.getElementById("sub-output");
 let substitutionKeyboard = document.getElementById("keyboard");
 let charList = [];
-
-String.prototype.replaceAll = function(str1, str2, ignore)
-{
-    return this.replace(new RegExp(str1.replace(/([\/\,\!\\\^\$\{\}\[\]\(\)\.\*\+\?\|\<\>\-\&])/g,"\\$&"),(ignore?"gi":"g")),(typeof(str2)=="string")?str2.replace(/\$/g,"$$$$"):str2);
-}
+let originalString = [];
+let workingDecodeString = [];
 
 function process() {
 
-    //reset our output divs
-    overviewOutput.innerHTML = "";
-    wordsOutput.innerHTML = "";
-    lettersOutput.innerHTML = "";
-    substitutionOutput.innerHTML ="";
+    input.valueOf().value = input.valueOf().value.trim();
 
-    let string = input.valueOf().value;
+    if(input.valueOf().value !== "") {
 
-    let charCount  = document.createElement("p");
-    let wordCount = document.createElement("p");
+        originalString = Array.from(input.valueOf().value);
+        workingDecodeString = Array.from(input.valueOf().value);
 
-    charCount.innerText = "total characters = "+string.length;
-    wordCount.innerText = "total words = "+countWords(string);
+        //reset our output divs
+        overviewOutput.innerHTML = "";
+        wordsOutput.innerHTML = "";
+        lettersOutput.innerHTML = "";
+        substitutionOutput.innerHTML = "";
+        substitutionKeyboard.innerHTML = "";
 
-    overviewOutput.appendChild(charCount);
-    overviewOutput.appendChild(wordCount);
+        console.log(substitutionOutput);
 
-    //word frequency and letter testing
-    getWordAndLetterFrequency(string);
+        let string = input.valueOf().value;
 
-    //call our letter substitution function
-    performSubstitution(null, null);
+        let charCount = document.createElement("p");
+        let wordCount = document.createElement("p");
 
-    //create our keyboard
-    createKeyboard();
+        charCount.innerText = "total characters = " + string.length;
+        wordCount.innerText = "total words = " + countWords(string);
 
-    substitutionKeyboard.addEventListener('keypress', function (key) {
-        performSubstitution(key.key,document.activeElement.id);
-    })
+        wordCount.style.backgroundColor = "rgb(57, 98, 162)";
+        charCount.style.backgroundColor = "rgb(57, 98, 162)";
+
+        overviewOutput.appendChild(charCount);
+        overviewOutput.appendChild(wordCount);
+
+        //word frequency and letter testing
+        getWordAndLetterFrequency(string);
+
+        //call our letter substitution function
+        performSubstitution(null, null);
+
+        //create our keyboard
+        createKeyboard();
+
+        substitutionKeyboard.addEventListener('keypress', function (key) {
+            performSubstitution(key.key, document.activeElement.id);
+        })
+
+    }else{
+        alert("Please enter a input before proceeding");
+    }
 }
 
 function getWordAndLetterFrequency(string) {
@@ -154,17 +168,38 @@ function performSubstitution(letter, target){
         p.style.borderColor = "white";
         p.style.borderStyle = "solid";
         p.style.padding = "8px";
-        p.innerText = input.valueOf().value;
+        p.innerText = renderArrayToString(workingDecodeString);
         p.id = "sub-replace-text";
         substitutionOutput.appendChild(p);
 
     }else{
 
+
         let text = document.getElementById("sub-replace-text");
-        let textLast = text.innerText;
-        text.innerText = replaceAllOneCharAtATime(textLast,target,letter)
+        text.innerText = "";
+        let targets = search(target);
+
+        targets.forEach(function (value) {
+            let index = parseInt(value[0])
+            workingDecodeString[index] = letter;
+        })
+
+        text.innerText = renderArrayToString(workingDecodeString);
+
+        //set the background color of the key to show its been changed
+        document.getElementById(target).parentElement.style.backgroundColor = "rgb(57, 98, 162)";
     }
 
+}
+
+function renderArrayToString(array){
+    let string = "";
+
+    array.forEach(function (value) {
+        string += (value);
+    })
+
+    return string;
 }
 
 function createKeyboard(){
@@ -173,6 +208,7 @@ function createKeyboard(){
         let p = document.createElement("p");
         let input = document.createElement("input");
 
+        input.maxLength = 1;
         //set the text
         p.innerText = char[0];
         input.value = char[0];
@@ -181,13 +217,24 @@ function createKeyboard(){
         div.appendChild(input);
         input.id = char[0];
         substitutionKeyboard.appendChild(div);
-
-        console.log(char[0])
     })
 }
 
+//search function, returns all the index of a known letter
+function search(letter) {
 
-//simple get word count function
+    let instances = {};
+    originalString.forEach(function (char, index) {
+        if(char === letter){
+            instances[index] = char;
+        }
+    })
+
+    return Object.entries(instances);
+}
+
+
+//simple get word count function returns the word count of the input string
 function countWords(string) {
     let words = string.split(" ");
     return words.length;
@@ -205,39 +252,3 @@ function compareSecondColumn(a, b) {
     }
 }
 
-//find and replace script created by Rick Velde
-//https://stackoverflow.com/questions/2116558/fastest-method-to-replace-all-instances-of-a-character-in-a-string
-function replaceAllOneCharAtATime(inSource, inToReplace, inReplaceWith) {
-    var output="";
-    var firstReplaceCompareCharacter = inToReplace.charAt(0);
-    var sourceLength = inSource.length;
-    var replaceLengthMinusOne = inToReplace.length - 1;
-    for(var i = 0; i < sourceLength; i++){
-        var currentCharacter = inSource.charAt(i);
-        var compareIndex = i;
-        var replaceIndex = 0;
-        var sourceCompareCharacter = currentCharacter;
-        var replaceCompareCharacter = firstReplaceCompareCharacter;
-        while(true){
-            if(sourceCompareCharacter != replaceCompareCharacter){
-                output += currentCharacter;
-                break;
-            }
-            if(replaceIndex >= replaceLengthMinusOne) {
-                i+=replaceLengthMinusOne;
-                output += inReplaceWith;
-                //was a match
-                break;
-            }
-            compareIndex++; replaceIndex++;
-            if(i >= sourceLength){
-                // not a match
-                break;
-            }
-            sourceCompareCharacter = inSource.charAt(compareIndex)
-            replaceCompareCharacter = inToReplace.charAt(replaceIndex);
-        }
-        replaceCompareCharacter += currentCharacter;
-    }
-    return output;
-}
