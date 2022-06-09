@@ -52,6 +52,7 @@ body main section form textarea{
     width: 100%;
     background-color: inherit;
     color: inherit;
+    resize: none;
 }
 
 body main section form button{
@@ -144,4 +145,16 @@ body main section #keyboard div input{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+#overview-output{
+    display: flex;
+    flex-direction: row;
+}
+#overview-output p{
+    width: 50%;
+    text-align: center;
+    margin: 16px;
+    padding: 8px;
+    color: white;
 }
