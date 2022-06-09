@@ -93,7 +93,6 @@ body section .flex div{
     margin: 4px;
     color: white;
     text-align: center;
-    box-shadow: 2.5px 2.5px 2.5px 2.5px rgba(136, 136, 136, 0.20);
 }
 #words-output{
     display: flex;
@@ -104,7 +103,6 @@ body section .flex div{
 #words-output div{
     height: 64px;
     background-color: rgba(57, 98, 162, 0.77);
-    box-shadow: 2.5px 2.5px 2.5px 2.5px rgba(136, 136, 136, 0.20);
     margin: 4px;
     color: white;
 }
@@ -112,6 +110,34 @@ body section .flex div{
 body main #frequency{
     height: 600px;
     overflow: scroll;
+}
+
+body main section #keyboard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+body main section #keyboard div{
+    background-color: white;
+    color: black;
+    width: 64px;
+    height: 64px;
+    margin: 4px;
+}
+
+body main section #keyboard div p{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 8px;
+    margin-bottom: -8px;
+}
+
+body main section #keyboard div input{
+    width: calc(100% - 16px);
+    text-align: center;
+    margin-top: 16px;
+    margin-left: 6px;
 }
 
 .center{
